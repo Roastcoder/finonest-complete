@@ -11,8 +11,8 @@ COPY . .
 RUN npx prisma generate
 RUN npm run build
 
-# Verify build output
-RUN ls -la dist/ && test -f dist/main.js || (echo "Build failed: dist/main.js not found" && exit 1)
+# Verify build output (check both possible locations)
+RUN ls -la dist/ && (test -f dist/main.js || test -f dist/src/main.js) || (echo "Build failed: main.js not found" && exit 1)
 
 # ---------- RUNTIME STAGE ----------
 FROM node:20-alpine
@@ -32,4 +32,4 @@ EXPOSE 3001
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
   CMD node --version || exit 1
 
-CMD ["node", "dist/main.js"]
+CMD ["sh", "-c", "if [ -f dist/main.js ]; then node dist/main.js; else node dist/src/main.js; fi"]
