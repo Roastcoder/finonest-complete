@@ -13,8 +13,8 @@ RUN npx prisma generate
 # Build NestJS application
 RUN npm run build
 
-# Verify build output
-RUN ls -la dist/
+# Verify build output exists
+RUN test -f dist/main.js || (echo "Build failed: dist/main.js not found" && exit 1)
 
 EXPOSE 3001
 
