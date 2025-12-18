@@ -8,6 +8,7 @@ import { ProductsModule } from './products/products.module';
 import { LoansModule } from './loans/loans.module';
 import { EligibilityModule } from './eligibility/eligibility.module';
 import { DashboardModule } from './dashboard/dashboard.module';
+import { HealthController } from './health/health.controller';
 
 @Module({
   imports: [
@@ -24,5 +25,6 @@ import { DashboardModule } from './dashboard/dashboard.module';
     EligibilityModule,
     DashboardModule,
   ],
+  controllers: [HealthController],
 })
 export class AppModule {}

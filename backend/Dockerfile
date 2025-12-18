@@ -17,6 +17,9 @@ RUN ls -la dist/ && (test -f dist/main.js || test -f dist/src/main.js) || (echo 
 # ---------- RUNTIME STAGE ----------
 FROM node:20-alpine
 
+# Install wget for health checks
+RUN apk add --no-cache wget
+
 WORKDIR /app
 
 COPY package*.json ./
@@ -29,7 +32,7 @@ COPY --from=builder /app/prisma ./prisma
 EXPOSE 3001
 
 # Add health check
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD node --version || exit 1
+HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
+  CMD wget --no-verbose --tries=1 --spider http://localhost:3001/api/health || exit 1
 
 CMD ["sh", "-c", "if [ -f dist/main.js ]; then node dist/main.js; else node dist/src/main.js; fi"]
