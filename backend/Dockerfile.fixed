@@ -2,9 +2,13 @@ FROM node:20-alpine
 
 WORKDIR /app
 
+# Copy package files
 COPY package*.json ./
+
+# Install dependencies
 RUN npm install
 
+# Copy source code
 COPY . .
 
 # Generate Prisma client
@@ -13,9 +17,11 @@ RUN npx prisma generate
 # Build NestJS application
 RUN npm run build
 
-# Verify build output
-RUN ls -la dist/
+# Verify dist folder exists
+RUN ls -la dist/ && test -f dist/main.js
 
+# Expose port
 EXPOSE 3001
 
+# Start application
 CMD ["npm", "run", "start:prod"]
