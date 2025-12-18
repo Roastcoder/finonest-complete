@@ -1,6 +1,7 @@
 import { Controller, Get, Post, Param, Res, UseInterceptors, UploadedFile, UseGuards } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Response } from 'express';
+import type { Multer } from 'multer';
 import { ImagesService } from './images.service';
 import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
 
@@ -11,7 +12,7 @@ export class ImagesController {
   @Post('upload')
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(FileInterceptor('file'))
-  async upload(@UploadedFile() file: Express.Multer.File) {
+  async upload(@UploadedFile() file: Multer.File) {
     const image = await this.imagesService.upload(file);
     return { id: image.id, filename: image.filename };
   }
