@@ -12,6 +12,15 @@ export class AuthController {
     return this.authService.signup(dto);
   }
 
+  @Get('login')
+  getLoginInfo() {
+    return {
+      message: 'Use POST method to login',
+      endpoint: 'POST /api/auth/login',
+      required: { email: 'string', password: 'string' }
+    };
+  }
+
   @Post('login')
   @HttpCode(HttpStatus.OK)
   async login(@Body() dto: LoginDto, @Res({ passthrough: true }) res: Response) {
