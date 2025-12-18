@@ -1,5 +1,5 @@
 # ---------- BUILD STAGE ----------
-FROM node:20-alpine AS builder
+FROM node:20-bullseye AS builder
 
 WORKDIR /app
 
@@ -15,10 +15,10 @@ RUN npm run build
 RUN ls -la dist/ && (test -f dist/main.js || test -f dist/src/main.js) || (echo "Build failed: main.js not found" && exit 1)
 
 # ---------- RUNTIME STAGE ----------
-FROM node:20-alpine
+FROM node:20-bullseye
 
 # Install wget for health checks
-RUN apk add --no-cache wget
+RUN apt-get update && apt-get install -y wget && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
