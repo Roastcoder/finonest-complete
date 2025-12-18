@@ -14,6 +14,9 @@ COPY . .
 # Build Next.js app
 RUN npm run build
 
+# Verify public folder exists
+RUN ls -la public/ || echo "No public folder found"
+
 # Expose port
 EXPOSE 3000
 
