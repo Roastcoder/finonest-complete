@@ -102,3 +102,15 @@ model ActivityLog {
 
   @@map("activity_logs")
 }
+
+model Image {
+  id        String   @id @default(uuid())
+  filename  String
+  originalName String
+  mimeType  String
+  size      Int
+  data      Bytes
+  createdAt DateTime @default(now())
+
+  @@map("images")
+}
