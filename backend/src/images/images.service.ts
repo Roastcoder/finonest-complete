@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import type { Multer } from 'multer';
+
 import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class ImagesService {
   constructor(private prisma: PrismaService) {}
 
-  async upload(file: Multer.File) {
+  async upload(file: any) {
     return this.prisma.image.create({
       data: {
         filename: `${Date.now()}-${file.originalname}`,
