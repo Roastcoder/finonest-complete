@@ -11,6 +11,9 @@ COPY . .
 RUN npx prisma generate
 RUN npm run build
 
+# Verify build output
+RUN ls -la dist/ && test -f dist/main.js || (echo "Build failed: dist/main.js not found" && exit 1)
+
 # ---------- RUNTIME STAGE ----------
 FROM node:20-alpine
 
